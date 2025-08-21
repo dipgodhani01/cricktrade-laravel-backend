@@ -2,14 +2,12 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "8000:80"
     volumes:
       - .:/var/www
-      - ./docker/nginx.conf:/etc/nginx/sites-available/default
+      - ./:/var/www  # This ensures .env is available
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
