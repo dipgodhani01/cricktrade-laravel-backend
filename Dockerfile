@@ -39,7 +39,7 @@ RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 
 # Copy supervisor configuration
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Generate application key
 RUN php artisan key:generate
