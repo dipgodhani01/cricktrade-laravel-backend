@@ -36,7 +36,7 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Copy nginx configuration
-COPY docker/nginx.conf /etc/nginx/sites-available/default
+COPY ./nginx.conf /etc/nginx/sites-available/default
 
 # Copy supervisor configuration
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
