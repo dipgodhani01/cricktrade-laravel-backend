@@ -56,15 +56,28 @@ class UserAuthController extends Controller
                 'message' => 'Login successful!',
             ]);
 
+            // $cookie = cookie(
+            //     'token',        // Cookie name
+            //     $jwtToken,      // Cookie value
+            //     60 * 24,        // Expiry in minutes (24 hours)
+            //     null,           // Path
+            //     null,           // Domain (null = current domain)
+            //     false,          // Secure (set true if using HTTPS)
+            //     true            // HttpOnly (JS cannot access)
+            // );
+
             $cookie = cookie(
                 'token',        // Cookie name
                 $jwtToken,      // Cookie value
-                60 * 24,        // Expiry in minutes (24 hours)
-                null,           // Path
-                null,           // Domain (null = current domain)
-                false,          // Secure (set true if using HTTPS)
-                true            // HttpOnly (JS cannot access)
+                60 * 24,        // Expiry in minutes
+                '/',            // Path
+                'cricktrade-laravel-backend.onrender.com', // Domain
+                true,           // Secure (Render uses HTTPS)
+                true,           // HttpOnly
+                false,          // Raw
+                'None'          // SameSite (None = allow cross-site)
             );
+
 
             return $response->withCookie($cookie);
         } catch (\Exception $e) {

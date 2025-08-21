@@ -83,15 +83,27 @@ class AdminAuthController extends Controller
                 'admin' => $admin,
             ]);
 
+            // $cookie = cookie(
+            //     'admin_token', // Cookie name
+            //     $token,        // Cookie value
+            //     60 * 24,       // Expiry in minutes (24 hours)
+            //     null,          // Path
+            //     null,          // Domain
+            //     false,         // Secure (set true if HTTPS)
+            //     true           // HttpOnly
+            // );
             $cookie = cookie(
-                'admin_token', // Cookie name
-                $token,        // Cookie value
-                60 * 24,       // Expiry in minutes (24 hours)
-                null,          // Path
-                null,          // Domain
-                false,         // Secure (set true if HTTPS)
-                true           // HttpOnly
+                'admin_token',
+                $token,
+                60 * 24,
+                '/',
+                'cricktrade-laravel-backend.onrender.com',
+                true,
+                true,
+                false,
+                'None'
             );
+
 
             return $response->withCookie($cookie);
         } catch (\Exception $e) {
