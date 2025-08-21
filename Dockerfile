@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git curl unzip libpq-dev libonig-dev libzip-dev zip \
+    git curl unzip libpq-dev libonig-dev libzip-dev zip nginx supervisor \
     && docker-php-ext-install pdo pdo_mysql mbstring zip
 
 # Install Composer
@@ -10,10 +10,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy composer files first (for caching)
+# Copy composer files first
 COPY composer.json composer.lock ./
-
-# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copy rest of the application
@@ -23,7 +21,13 @@ COPY . .
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Clear caches (only when container runs, not at build)
-# ENTRYPOINT ["sh", "-c", "php artisan config:clear && php artisan route:clear && php artisan view:clear && exec php-fpm"]
+# Copy Nginx config
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD ["php-fpm"]
+# Copy Supervisor config
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Expose HTTP port
+EXPOSE 80
+
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
