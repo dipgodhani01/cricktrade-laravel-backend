@@ -27,7 +27,8 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 # Copy Supervisor config
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Expose HTTP port
-EXPOSE 80
+# Render expects your app to listen on PORT (default 10000)
+ENV PORT 10000
+EXPOSE 10000
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
